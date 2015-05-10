@@ -4,7 +4,7 @@ class CreateResponders < ActiveRecord::Migration
       t.string :name
       t.string :type
       t.integer :capacity
-      t.boolean :on_duty
+      t.boolean :on_duty, null: false, default: false
 
       t.timestamps null: false
     end

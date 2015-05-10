@@ -1,1 +1,3 @@
-json.extract! @responder, :id, :name, :type, :capacity, :on_duty, :created_at, :updated_at
+json.responder do
+  json.extract! @responder, :emergency_code, :name, :type, :capacity, :on_duty
+end

@@ -10,6 +10,12 @@ class RespondersController < ActionController::Base
   # GET /responders/1
   # GET /responders/1.json
   def show
+    if @responder.nil?
+      render nothing: true, status: :not_found
+    end
+
+      @responder
+
   end
 
   # GET /responders/new
@@ -24,15 +30,26 @@ class RespondersController < ActionController::Base
   # POST /responders
   # POST /responders.json
   def create
+
+    if params[:responder][:id]
+      render json: {message: "found unpermitted parameter: id"}, status: :unprocessable_entity
+      return
+    elsif params[:responder][:on_duty]
+      render json: {message: "found unpermitted parameter: on_duty"}, status: :unprocessable_entity
+      return
+    elsif params[:responder][:emergency_code]
+      render json: {message: "found unpermitted parameter: emergency_code"}, status: :unprocessable_entity
+      return
+    end
+
+
     @responder = Responder.new(responder_params)
 
     respond_to do |format|
       if @responder.save
-        format.html { redirect_to @responder, notice: 'Responder was successfully created.' }
-        format.json { render :show, status: :created, location: @responder }
+        format.json { render :show, status: :created }
       else
-        format.html { render :new }
-        format.json { render json: @responder.errors, status: :unprocessable_entity }
+        format.json { render json: {message:@responder.errors} , status: :unprocessable_entity }
       end
     end
   end
@@ -42,11 +59,9 @@ class RespondersController < ActionController::Base
   def update
     respond_to do |format|
       if @responder.update(responder_params)
-        format.html { redirect_to @responder, notice: 'Responder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @responder }
+        format.json { render :show, status: :ok }
       else
-        format.html { render :edit }
-        format.json { render json: @responder.errors, status: :unprocessable_entity }
+          format.json { render json: {message: @responder.errors}, status: :unprocessable_entity }
       end
     end
   end
@@ -56,7 +71,6 @@ class RespondersController < ActionController::Base
   def destroy
     @responder.destroy
     respond_to do |format|
-      format.html { redirect_to responders_url, notice: 'Responder was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -64,7 +78,7 @@ class RespondersController < ActionController::Base
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_responder
-      @responder = Responder.find(params[:name])
+      @responder = Responder.find_by(name: params[:name])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
