@@ -4,6 +4,6 @@ json.emergencies do
   end
 end
 
-json.full_response_emergencies do
-  json.array!([@full_response_count, @emegencies.length])
+json.full_responses do
+  json.array!([@full_response_count, @emergencies.length])
 end

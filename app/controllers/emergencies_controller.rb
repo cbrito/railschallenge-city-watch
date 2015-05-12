@@ -5,6 +5,9 @@ class EmergenciesController < ActionController::Base
   # GET /emergencies.json
   def index
     @emergencies = Emergency.all
+
+    @full_response_count = 0  #TODO Set this to some value in index test based on Emergency.full_response
+
   end
 
   # GET /emergencies/1
@@ -13,7 +16,7 @@ class EmergenciesController < ActionController::Base
     if @emergency.nil?
       render nothing: true, status: :not_found
     end
-    
+
       @emergency
 
   end
