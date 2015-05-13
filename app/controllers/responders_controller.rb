@@ -57,6 +57,23 @@ class RespondersController < ActionController::Base
   # PATCH/PUT /responders/1
   # PATCH/PUT /responders/1.json
   def update
+    if params[:responder][:id]
+      render json: {message: "found unpermitted parameter: id"}, status: :unprocessable_entity
+      return
+    elsif params[:responder][:emergency_code]
+      render json: {message: "found unpermitted parameter: emergency_code"}, status: :unprocessable_entity
+      return
+    elsif params[:responder][:type]
+      render json: {message: "found unpermitted parameter: type"}, status: :unprocessable_entity
+      return
+    elsif params[:responder][:name]
+      render json: {message: "found unpermitted parameter: name"}, status: :unprocessable_entity
+      return
+    elsif params[:responder][:capacity]
+      render json: {message: "found unpermitted parameter: capacity"}, status: :unprocessable_entity
+      return
+    end
+
     respond_to do |format|
       if @responder.update(responder_params)
         format.json { render :show, status: :ok }

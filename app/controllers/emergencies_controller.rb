@@ -37,10 +37,9 @@ class EmergenciesController < ActionController::Base
 
     respond_to do |format|
       if @emergency.save
-        format.html { redirect_to @emergency, notice: 'Emergency was successfully created.' }
+        EmergenciesHelper.dispatch_responders @emergency
         format.json { render :show, status: :created, location: @emergency }
       else
-        format.html { render :new }
         format.json { render json: {message: @emergency.errors}, status: :unprocessable_entity }
       end
     end
